@@ -1,0 +1,13 @@
+<h1>Show Movie</h1>
+
+<ul>
+
+  <li>
+    <strong>Movie:</strong>
+    <%= @movie.movie_id %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.movie_path(@conn, :edit, @movie) %></span> |
+<span><%= link "Back", to: Routes.movie_path(@conn, :index) %></span>
