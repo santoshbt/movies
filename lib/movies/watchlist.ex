@@ -4,9 +4,11 @@ defmodule Movies.Watchlist do
   """
 
   import Ecto.Query, warn: false
+  alias Ecto.Changeset
   alias Movies.Repo
 
   alias Movies.Watchlist.Movie
+  alias MoviesWeb.MovieService
 
   @doc """
   Returns the list of movies.
@@ -21,84 +23,55 @@ defmodule Movies.Watchlist do
     Repo.all(Movie)
   end
 
-  @doc """
-  Gets a single movie.
+  def get_movie!(id), do: MovieService.get(id)
 
-  Raises `Ecto.NoResultsError` if the Movie does not exist.
+  # @doc """
+  # Returns an `%Ecto.Changeset{}` for tracking movie changes.
 
-  ## Examples
+  # ## Examples
 
-      iex> get_movie!(123)
-      %Movie{}
+  #     iex> change_movie(movie)
+  #     %Ecto.Changeset{data: %Movie{}}
 
-      iex> get_movie!(456)
-      ** (Ecto.NoResultsError)
+  # """
+  # def change_movie(%Movie{} = movie, attrs \\ %{}) do
+  #   Movie.changeset(movie, attrs)
+  # end
 
-  """
-  def get_movie!(id), do: Repo.get!(Movie, id)
-
-  @doc """
-  Creates a movie.
-
-  ## Examples
-
-      iex> create_movie(%{field: value})
-      {:ok, %Movie{}}
-
-      iex> create_movie(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
   def create_movie(attrs \\ %{}) do
     %Movie{}
     |> Movie.changeset(attrs)
     |> Repo.insert()
   end
 
-  @doc """
-  Updates a movie.
-
-  ## Examples
-
-      iex> update_movie(movie, %{field: new_value})
-      {:ok, %Movie{}}
-
-      iex> update_movie(movie, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_movie(%Movie{} = movie, attrs) do
-    movie
-    |> Movie.changeset(attrs)
-    |> Repo.update()
+  def search(movie_name) when is_binary(movie_name) do
+    MovieService.search(movie_name)
   end
 
-  @doc """
-  Deletes a movie.
+  def search(_), do: "Not a valid movie name"
 
-  ## Examples
-
-      iex> delete_movie(movie)
-      {:ok, %Movie{}}
-
-      iex> delete_movie(movie)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_movie(%Movie{} = movie) do
-    Repo.delete(movie)
+  def watch_movie(current_user, movie_id) do
+    user_movie = find_or_insert(movie_id)
+    user_loaded = Repo.preload(current_user, [:movies])
+    user_loaded
+        |> Changeset.change()
+        |> Changeset.put_assoc(:movies, [user_movie | user_loaded.movies])
+        |> Repo.update!()
   end
 
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking movie changes.
+  defp find_or_insert(movie_id) do
+    {movie_id, ""} = Integer.parse(movie_id)
+    required_movie = get!(movie_id)
 
-  ## Examples
+    if required_movie do
+      required_movie
+    else
+      {:ok, movie} = create_movie(%{movie_id: movie_id})
+      movie
+    end
+  end
 
-      iex> change_movie(movie)
-      %Ecto.Changeset{data: %Movie{}}
-
-  """
-  def change_movie(%Movie{} = movie, attrs \\ %{}) do
-    Movie.changeset(movie, attrs)
+  defp get!(movie_id) do
+    Movie |> Repo.get_by(movie_id: movie_id)
   end
 end

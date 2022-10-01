@@ -14,7 +14,7 @@
       <section class="container">
         <nav>
           <ul>
-            <%= if Pow.Plug.current_user(@conn) do %>
+            <%= if @current_user do %>
               <li><%= @current_user.email %></li>
               <li><%= link "Sign out", to: Routes.pow_session_path(@conn, :delete), method: :delete %></li>
             <% else %>
@@ -24,6 +24,12 @@
           </ul>
         </nav>
         <h1> My Movies </h1>
+        <nav>
+          <%= form_for @conn, Routes.search_path(@conn, :index), [method: :get, class: "search-box"], fn f -> %>
+            <%= text_input f, :query %>
+            <%= submit "Search" %>
+          <% end %>
+        </nav>
       </section>
     </header>
     <%= @inner_content %>

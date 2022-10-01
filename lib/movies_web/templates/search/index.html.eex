@@ -1,0 +1,17 @@
+<h1>Search results for <%= @query %></h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Movies</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for result <- @results do %>
+    <%= render "search_result.html", conn: @conn, result: result %>
+<% end %>
+  </tbody>
+</table>
+

@@ -29,6 +29,12 @@ config :movies, MoviesWeb.Endpoint,
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
   ]
 
+  config :movies, environment: :dev,
+    movies_db_search_base_url: "http://api.themoviedb.org/3/search/movie",
+    movies_db_get_url: "https://api.themoviedb.org/3/movie/",
+    api_key: "7e719bfe3cd3786ebf0a05d3b138853d"
+
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed

@@ -1,13 +1,15 @@
 <h1>Show Movie</h1>
 
 <ul>
-
-  <li>
-    <strong>Movie:</strong>
-    <%= @movie.movie_id %>
-  </li>
-
+  <strong>Movie</strong>
+  <h2 class="movie_title"><%= @movie["title"] %></h2>
+  <li><strong>Origninal Language:</strong> <%= @movie["original_language"] %></li>
+  <li><strong>Overview:</strong> <%= @movie["overview"] %></li>
+  <li><strong>Popularity:</strong> <%= @movie["popularity"] %></li>
+  <li><strong>Release Date:</strong> <%= @movie["release_date"] %></li>
+  <li><strong>Poster Path:</strong> <%= @movie["poster_path"] %></li>
+  <li><strong>Adult:</strong> <%= adult_content(@movie["adult"]) %></li>
+  <li><strong>Vote Average:</strong> <%= @movie["vote_average"] %></li>
 </ul>
 
-<span><%= link "Edit", to: Routes.movie_path(@conn, :edit, @movie) %></span> |
 <span><%= link "Back", to: Routes.movie_path(@conn, :index) %></span>
