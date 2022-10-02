@@ -12,7 +12,8 @@ To achieve this, we need both users and movies tables.
 
 Hence, when user clicks on "Watch Later", I add the movie id into movies table.
 It is inserted only if it does not exist already.
-Once it is added to table, we can establish many-to-many relationship between both users and movies.
+Once it is added to table, we can establish many-to-many relationship between both users and movies via an intermediary table user_movies.
+This table stores only primary keys of users and movies tables.
 
 - Used "pow" library for user authentication and management.
 - Added watchlist context to separate the business logic.
