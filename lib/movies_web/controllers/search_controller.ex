@@ -3,15 +3,19 @@ defmodule MoviesWeb.SearchController do
   alias Movies.Watchlist
   import MoviesWeb.Controllers.Helpers.CurrentUserHelper
 
-  def index(conn, _params) do
-    query_param = conn.query_params["query"]
-    response = Watchlist.search(query_param)
-    results = response["results"]
+  plug MoviesWeb.Plugs.AuthenticateUser when action in [:index]
 
-    render(conn, "index.html",
-      query: query_param,
-      results: results,
-      current_user: current_user(conn)
-    )
+  def index(conn, _params) do
+    if current_user(conn) do
+      query_param = conn.query_params["query"]
+      response = Watchlist.search(query_param)
+      results = response["results"]
+
+      render(conn, "index.html",
+        query: query_param,
+        results: results,
+        current_user: current_user(conn)
+      )
+    end
   end
 end

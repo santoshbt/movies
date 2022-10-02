@@ -10,7 +10,7 @@ defmodule MoviesWeb.Router do
     plug :put_root_layout, {MoviesWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    # plug MoviesWeb.ApiAuthPlug, otp_app: :movies
+    plug MoviesWeb.Plugs.SetCurrentUser
   end
 
   scope "/" do
