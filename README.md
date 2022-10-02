@@ -1,19 +1,24 @@
 # Movies
 
-To start your Phoenix server:
+This project is buuit in Erlang/OTP 25 and Elixir 1.13.4.
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+The movies DB is searched using the API provided by https://developers.themoviedb.org/3
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+Users can Search, View details, Add to Watch Later and Remove from Watch later.
+I have used Many to Many relationship. Because one user can add many movies to watch list
+and one movie can belong to many users.
+We donot have mavies locally and they are being accessed from remote API call.
+To achieve this, we need both users and movies tables.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+Hence, when user clicks on "Watch Later", I add the movie id into movies table.
+It is inserted only if it does not exist already.
+Once it is added to table, we can establish many-to-many relationship between both users and movies.
 
-## Learn more
+- Used "pow" library for user authentication and management.
+- Added "watch_later" context to club all the related functionalities of movies.
+- Added services to call Movie DB apis via HTTPoison.
+- Separated search controller, because it can be extended to serve different entities later.
+- Added /config/dev.exs to .gitignore for security purposes.
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+Thanks
+
