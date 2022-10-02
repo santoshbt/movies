@@ -15,7 +15,7 @@ It is inserted only if it does not exist already.
 Once it is added to table, we can establish many-to-many relationship between both users and movies.
 
 - Used "pow" library for user authentication and management.
-- Added "watch_later" context to club all the related functionalities of movies.
+- Added watchlist context to separate the business logic.
 - Added services to call Movie DB apis via HTTPoison.
 - Separated search controller, because it can be extended to serve different entities later.
 - Added /config/dev.exs to .gitignore for security purposes.
