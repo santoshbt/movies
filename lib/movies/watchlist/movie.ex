@@ -5,6 +5,7 @@ defmodule Movies.Watchlist.Movie do
 
   schema "movies" do
     field :movie_id, :integer
+
     many_to_many(
       :users,
       User,

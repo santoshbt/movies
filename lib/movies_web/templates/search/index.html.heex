@@ -9,9 +9,9 @@
     </tr>
   </thead>
   <tbody>
-<%= for result <- @results do %>
-    <%= render "search_result.html", conn: @conn, result: result %>
-<% end %>
+    <%= for result <- @results do %>
+        <%= render "search_result.html", conn: @conn, result: result, current_user: @current_user %>
+    <% end %>
   </tbody>
 </table>
 

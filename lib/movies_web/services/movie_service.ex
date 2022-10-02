@@ -10,6 +10,7 @@ defmodule MoviesWeb.MovieService do
 
     search_url = "#{base_url}?api_key=#{api_key}&#{encoded_param}"
     response = HTTPoison.get!(search_url)
+
     case Poison.decode(response.body) do
       {:ok, response_body} -> response_body
       _ -> nil
@@ -22,6 +23,7 @@ defmodule MoviesWeb.MovieService do
 
     get_url = "#{base_url}/#{id}?api_key=#{api_key}"
     response = HTTPoison.get!(get_url)
+
     case Poison.decode(response.body) do
       {:ok, response_body} -> response_body
       _ -> nil

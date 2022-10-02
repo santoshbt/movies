@@ -1,0 +1,7 @@
+<tr>
+    <td><%= link user_movie(@movie), to: Routes.movie_path(@conn, :show, @movie.movie_id) %></td>
+
+    <td>
+        <span><%= link "Remove", to: Routes.movie_path(@conn, :remove_watchlist, @movie) %></span>
+    </td>
+</tr>

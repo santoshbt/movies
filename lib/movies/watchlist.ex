@@ -7,36 +7,16 @@ defmodule Movies.Watchlist do
   alias Ecto.Changeset
   alias Movies.Repo
 
-  alias Movies.Watchlist.Movie
+  alias Movies.Watchlist.{Movie, UserMovie}
   alias MoviesWeb.MovieService
 
-  @doc """
-  Returns the list of movies.
-
-  ## Examples
-
-      iex> list_movies()
-      [%Movie{}, ...]
-
-  """
-  def list_movies do
-    Repo.all(Movie)
+  def list_movies(user) do
+    user = user |> Repo.preload(:movies)
+    user.movies
   end
 
+  @spec get_movie!(any) :: false | nil | true | binary | list | number | map
   def get_movie!(id), do: MovieService.get(id)
-
-  # @doc """
-  # Returns an `%Ecto.Changeset{}` for tracking movie changes.
-
-  # ## Examples
-
-  #     iex> change_movie(movie)
-  #     %Ecto.Changeset{data: %Movie{}}
-
-  # """
-  # def change_movie(%Movie{} = movie, attrs \\ %{}) do
-  #   Movie.changeset(movie, attrs)
-  # end
 
   def create_movie(attrs \\ %{}) do
     %Movie{}
@@ -50,13 +30,18 @@ defmodule Movies.Watchlist do
 
   def search(_), do: "Not a valid movie name"
 
-  def watch_movie(current_user, movie_id) do
+  def watch_movie(user, movie_id) do
     user_movie = find_or_insert(movie_id)
-    user_loaded = Repo.preload(current_user, [:movies])
+    user_loaded = Repo.preload(user, [:movies])
+
     user_loaded
-        |> Changeset.change()
-        |> Changeset.put_assoc(:movies, [user_movie | user_loaded.movies])
-        |> Repo.update!()
+    |> Changeset.change()
+    |> Changeset.put_assoc(:movies, [user_movie | user_loaded.movies])
+    |> Repo.update!()
+  end
+
+  def remove(user, movie_id) do
+    Repo.delete_all(user_movie_query(user.id, movie_id))
   end
 
   defp find_or_insert(movie_id) do
@@ -73,5 +58,12 @@ defmodule Movies.Watchlist do
 
   defp get!(movie_id) do
     Movie |> Repo.get_by(movie_id: movie_id)
+  end
+
+  defp user_movie_query(user_id, movie_id) do
+    from(um in UserMovie,
+      where: um.user_id == ^user_id,
+      where: um.movie_id == ^movie_id
+    )
   end
 end

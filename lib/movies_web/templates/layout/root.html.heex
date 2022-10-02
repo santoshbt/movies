@@ -23,13 +23,15 @@
             <% end %>
           </ul>
         </nav>
-        <h1> My Movies </h1>
-        <nav>
-          <%= form_for @conn, Routes.search_path(@conn, :index), [method: :get, class: "search-box"], fn f -> %>
-            <%= text_input f, :query %>
-            <%= submit "Search" %>
-          <% end %>
-        </nav>
+        <h1> Trending Movies </h1>
+        <%= if @current_user do %>
+          <nav>
+            <%= form_for @conn, Routes.search_path(@conn, :index), [method: :get, class: "search-box"], fn f -> %>
+              <%= text_input f, :query %>
+              <%= submit "Search" %>
+            <% end %>
+          </nav>
+        <% end %>
       </section>
     </header>
     <%= @inner_content %>

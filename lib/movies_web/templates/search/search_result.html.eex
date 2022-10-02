@@ -1,7 +1,0 @@
-<tr>
-    <td><%= link @result["title"], to: Routes.movie_path(@conn, :show, @result["id"]) %></td>
-
-    <td>
-        <span><%= link "Watch Later", to: Routes.movie_path(@conn, :watch_later, @result["id"]), class: "watch_later" %></span>
-    </td>
-</tr>

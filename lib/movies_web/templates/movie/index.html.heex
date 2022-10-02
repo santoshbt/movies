@@ -1,23 +1,14 @@
-<h1>Listing Movies</h1>
+<h1>My Watchlist</h1>
 
 <table>
-  <thead>
-    <tr>
-      <th>Movie</th>
-
-      <th></th>
-    </tr>
-  </thead>
   <tbody>
-  <%= for movie <- @movies do %>
-      <tr>
-        <td><%= movie.movie_id %></td>
-
-        <td>
-          <span><%= link "Show", to: Routes.movie_path(@conn, :show, movie) %></span>
-        </td>
-      </tr>
-  <% end %>
+    <%= if length(@movies) > 0 do %>
+      <%= for movie <- @movies do %>
+        <%= render "movie.html", conn: @conn, movie: movie %>
+      <% end %>
+    <% else %>
+          <h2> No movies foud in the watchlist </h2>
+    <% end %>
   </tbody>
 </table>
 

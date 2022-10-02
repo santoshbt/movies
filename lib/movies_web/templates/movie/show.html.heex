@@ -12,4 +12,7 @@
   <li><strong>Vote Average:</strong> <%= @movie["vote_average"] %></li>
 </ul>
 
-<span><%= link "Back", to: Routes.movie_path(@conn, :index) %></span>
+
+
+<span><%= link "Watch Later", to: Routes.movie_path(@conn, :watch_later, @movie["id"]), class: "watch_later" %></span>
+| <span><%= link "Back", to: Routes.movie_path(@conn, :index) %></span>

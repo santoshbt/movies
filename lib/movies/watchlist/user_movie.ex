@@ -12,21 +12,19 @@ defmodule Movies.Watchlist.UserMovie do
   @primary_key false
   schema "user_movie" do
     belongs_to(:user, User, primary_key: true)
-    belongs_to(:movies, Movie, primary_key: true)
-
-    timestamps()
+    belongs_to(:movie, Movie, primary_key: true)
   end
 
-  @required_fields ~w(user_id project_id)a
+  @required_fields ~w(user_id movie_id)a
   def changeset(user_movie, params \\ %{}) do
     user_movie
-      |> cast(params, @required_fields)
-      |> validate_required(@required_fields)
-      |> foreign_key_constraint(:user_id)
-      |> foreign_key_constraint(:movie_id)
-      |> unique_constraint([:user, :movie],
-          name: :user_id_movie_id_unique_index,
-          message: "Already exists"
-      )
+    |> cast(params, @required_fields)
+    |> validate_required(@required_fields)
+    |> foreign_key_constraint(:user_id)
+    |> foreign_key_constraint(:movie_id)
+    |> unique_constraint([:user, :movie],
+      name: :user_id_movie_id_unique_index,
+      message: "Already exists"
+    )
   end
 end

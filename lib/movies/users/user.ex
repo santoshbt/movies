@@ -5,6 +5,7 @@ defmodule Movies.Users.User do
 
   schema "users" do
     pow_user_fields()
+
     many_to_many(
       :movies,
       Movie,
